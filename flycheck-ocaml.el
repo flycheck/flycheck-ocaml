@@ -36,14 +36,44 @@
 (require 'merlin)
 (require 'flycheck)
 
+(defun flycheck-ocaml-merlin-parse-error (alist)
+  "Parse an error ALIST from Merlin into a `flycheck-error'.
+
+Return the corresponding `flycheck-error'."
+  (let* ((message (cdr (assq 'message alist)))
+         (start (cdr (assq 'start alist)))
+         (line (or (cdr (assq 'line start)) 1))
+         (column (cdr (assq 'col start))))
+    (when message
+      (flycheck-error-new-at line column 'error message))))
+
 (defun flycheck-ocaml-merlin-start (checker callback)
-  "")
+  "Start a Merlin syntax check with CHECKER.
+
+CALLBACK is the status callback passed by Flycheck."
+  ;; Sync the buffer contents with Merlin.
+  (merlin-sync-to-point (point-max) t)
+  (let ((buffer (current-buffer)))
+    ;; Put the current buffer into the closure environment so that we have
+    ;; access to it later.
+    (merlin-send-command-async
+     'errors
+     (lambda (data)
+       (let ((errors (delq nil (mapcar #'flycheck-ocaml-merlin-parse-error
+                                       data))))
+         (dolist (err errors)
+           (setf (flycheck-error-filename err) (buffer-file-name))
+           (setf (flycheck-error-checker err) checker)
+           (setf (flycheck-error-buffer err) buffer))
+         (funcall callback 'finished errors)))
+     ;; The error callback
+     (lambda (msg) (funcall callback 'errored msg)))))
 
 (flycheck-define-generic-checker 'ocaml-merlin
   "A syntax checker for OCaml using Merlin Mode.
 
 See URL `https://github.com/the-lambda-church/merlin'."
-  :start #'flycheck-ocaml-merlin-check
+  :start #'flycheck-ocaml-merlin-start
   :modes '(caml-mode tuareg-mode)
   :predicate (lambda () merlin-mode))
 
