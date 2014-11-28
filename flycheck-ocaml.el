@@ -36,8 +36,8 @@
 (require 'merlin)
 (require 'flycheck)
 
-(defun flycheck-ocaml-merlin-parse-error (alist)
-  "Parse an error ALIST from Merlin into a `flycheck-error'.
+(defun flycheck-ocaml-merlin-parse-error (alist checker)
+  "Parse a Merlin error ALIST from CHECKER into a `flycheck-error'.
 
 Return the corresponding `flycheck-error'."
   (let* ((message (cdr (assq 'message alist)))
@@ -45,7 +45,7 @@ Return the corresponding `flycheck-error'."
          (line (or (cdr (assq 'line start)) 1))
          (column (cdr (assq 'col start))))
     (when message
-      (flycheck-error-new-at line column 'error message))))
+      (flycheck-error-new-at line column 'error message :checker checker))))
 
 (defun flycheck-ocaml-merlin-start (checker callback)
   "Start a Merlin syntax check with CHECKER.
@@ -53,19 +53,18 @@ Return the corresponding `flycheck-error'."
 CALLBACK is the status callback passed by Flycheck."
   ;; Sync the buffer contents with Merlin.
   (merlin-sync-to-point (point-max) t)
+  ;; Put the current buffer into the closure environment so that we have access
+  ;; to it later.
   (let ((buffer (current-buffer)))
-    ;; Put the current buffer into the closure environment so that we have
-    ;; access to it later.
     (merlin-send-command-async
      'errors
      (lambda (data)
-       (let ((errors (delq nil (mapcar #'flycheck-ocaml-merlin-parse-error
-                                       data))))
-         (dolist (err errors)
-           (setf (flycheck-error-filename err) (buffer-file-name))
-           (setf (flycheck-error-checker err) checker)
-           (setf (flycheck-error-buffer err) buffer))
-         (funcall callback 'finished errors)))
+       (with-current-buffer buffer
+         (let ((errors (mapcar
+                        (lambda (alist)
+                          (flycheck-ocaml-merlin-parse-error alist checker))
+                        data)))
+           (funcall callback 'finished (delq nil errors)))))
      ;; The error callback
      (lambda (msg) (funcall callback 'errored msg)))))
 
