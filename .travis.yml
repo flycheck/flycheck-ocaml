@@ -18,7 +18,7 @@ before_install:
   - opam init --yes
   - eval $(opam config env)
 install:
-  - opam install merlin
+  - opam install --yes merlin
   - cask install
 script:
   - make EMACS=$emacs compile
