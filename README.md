@@ -27,7 +27,7 @@ In your `init.el`:
 (with-eval-after-load 'flycheck
   (require 'flycheck-ocaml))
 
-(add-hook 'tuareg-mode-hook 'merlin-mode)
+(add-hook 'tuareg-mode-hook #'merlin-mode)
 ```
 
 Usage
