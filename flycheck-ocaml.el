@@ -76,6 +76,8 @@ See URL `https://github.com/the-lambda-church/merlin'."
   :modes '(caml-mode tuareg-mode)
   :predicate (lambda () merlin-mode))
 
+(add-to-list 'flycheck-checkers 'ocaml-merlin)
+
 (provide 'flycheck-ocaml)
 
 ;;; flycheck-ocaml.el ends here
