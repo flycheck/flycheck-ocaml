@@ -21,4 +21,4 @@ install:
   - opam install --yes merlin
   - cask install
 script:
-  - make EMACS=$emacs compile
+  - make EMACS=$EMACS compile
