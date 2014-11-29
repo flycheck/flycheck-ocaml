@@ -36,8 +36,8 @@
 (require 'merlin)
 (require 'flycheck)
 
-(defun flycheck-ocaml-merlin-parse-error (alist checker)
-  "Parse a Merlin error ALIST from CHECKER into a `flycheck-error'.
+(defun flycheck-ocaml-merlin-parse-error (alist checker buffer)
+  "Parse a Merlin error ALIST from CHECKER in BUFFER into a `flycheck-error'.
 
 Return the corresponding `flycheck-error'."
   (let* ((message (cdr (assq 'message alist)))
@@ -45,7 +45,10 @@ Return the corresponding `flycheck-error'."
          (line (or (cdr (assq 'line start)) 1))
          (column (cdr (assq 'col start))))
     (when message
-      (flycheck-error-new-at line column 'error message :checker checker))))
+      (flycheck-error-new-at line column 'error message
+                             :checker checker
+                             :buffer buffer
+                             :filename (buffer-file-name)))))
 
 (defun flycheck-ocaml-merlin-start (checker callback)
   "Start a Merlin syntax check with CHECKER.
@@ -59,12 +62,11 @@ CALLBACK is the status callback passed by Flycheck."
     (merlin-send-command-async
      'errors
      (lambda (data)
-       (with-current-buffer buffer
-         (let ((errors (mapcar
-                        (lambda (alist)
-                          (flycheck-ocaml-merlin-parse-error alist checker))
-                        data)))
-           (funcall callback 'finished (delq nil errors)))))
+       (let ((errors (mapcar
+                      (lambda (alist)
+                        (flycheck-ocaml-merlin-parse-error alist checker buffer))
+                      data)))
+         (funcall callback 'finished (delq nil errors))))
      ;; The error callback
      (lambda (msg) (funcall callback 'errored msg)))))
 
