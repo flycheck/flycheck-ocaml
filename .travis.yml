@@ -22,3 +22,4 @@ install:
   - cask install
 script:
   - make EMACS=$EMACS compile
+  - make EMACS=$EMACS test
