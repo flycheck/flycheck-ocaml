@@ -81,7 +81,12 @@ See URL `https://github.com/the-lambda-church/merlin'."
                              ;; enabled, to avoid duplicate overlays
                              (not merlin-error-after-save))))
 
-(add-to-list 'flycheck-checkers 'ocaml-merlin)
+;;;###autoload
+(defun flycheck-ocaml-setup ()
+  "Setup Flycheck OCaml.
+
+Add `ocaml-merlin' to `flycheck-checkers'."
+  (add-to-list 'flycheck-checkers 'ocaml-merlin))
 
 (provide 'flycheck-ocaml)
 

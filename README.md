@@ -24,12 +24,12 @@ In your [`Cask`][cask] file:
 In your `init.el`:
 
 ```cl
-(with-eval-after-load 'flycheck
-  (require 'flycheck-ocaml))
-
-;; Disable Merlin's own error checking
 (with-eval-after-load 'merlin
-  (setq merlin-error-after-save nil))
+  ;; Disable Merlin's own error checking
+  (setq merlin-error-after-save nil)
+
+  ;; Enable Flycheck checker
+  (flycheck-ocaml-setup))
 
 (add-hook 'tuareg-mode-hook #'merlin-mode)
 ```
