@@ -76,7 +76,10 @@ CALLBACK is the status callback passed by Flycheck."
 See URL `https://github.com/the-lambda-church/merlin'."
   :start #'flycheck-ocaml-merlin-start
   :modes '(caml-mode tuareg-mode)
-  :predicate (lambda () merlin-mode))
+  :predicate (lambda () (and merlin-mode
+                             ;; Don't check if Merlin's own checking is
+                             ;; enabled, to avoid duplicate overlays
+                             (not merlin-error-after-save))))
 
 (add-to-list 'flycheck-checkers 'ocaml-merlin)
 

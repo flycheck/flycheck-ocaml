@@ -27,6 +27,10 @@ In your `init.el`:
 (with-eval-after-load 'flycheck
   (require 'flycheck-ocaml))
 
+;; Disable Merlin's own error checking
+(with-eval-after-load 'merlin
+  (setq merlin-error-after-save nil))
+
 (add-hook 'tuareg-mode-hook #'merlin-mode)
 ```
 
