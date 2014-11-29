@@ -11,7 +11,7 @@ OBJECTS = $(SRCS:.el=.elc)
 
 EMACSBATCH = $(EMACS) -Q --batch $(EMACSFLAGS)
 
-.PHONY: compile dist \
+.PHONY: compile dist test \
 	clean clean-elc clean-dist clean-deps
 
 compile : $(OBJECTS)
@@ -20,6 +20,12 @@ dist :
 	$(CASK) package
 
 deps : $(PKGDIR)
+
+# Testing
+test:
+	$(CASK) exec $(EMACSBATCH) \
+		-l flycheck-ocaml.el -l test/flycheck-ocaml-test.el \
+		-f ert-run-tests-batch-and-exit
 
 # Cleanup targets
 clean : clean-elc clean-dist clean-deps
@@ -38,4 +44,4 @@ $(PKGDIR) : Cask
 	touch $(PKGDIR)
 
 %.elc : %.el $(PKGDIR)
-	$(CASK) exec $(EMACSBATCH) -L . -f batch-byte-compile $<
+	$(CASK) exec $(EMACSBATCH) -f batch-byte-compile $<
