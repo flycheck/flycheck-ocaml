@@ -98,11 +98,14 @@ CALLBACK is the status callback passed by Flycheck."
     (merlin-send-command-async
      'errors
      (lambda (data)
-       (let ((errors (mapcar
-                      (lambda (alist)
-                        (flycheck-ocaml-merlin-parse-error alist checker buffer))
-                      data)))
-         (funcall callback 'finished (delq nil errors))))
+       (condition-case err
+           (let ((errors (mapcar
+                          (lambda (alist)
+                            (flycheck-ocaml-merlin-parse-error alist checker
+                                                               buffer))
+                          data)))
+             (funcall callback 'finished (delq nil errors)))
+         (error (funcall callback 'errored (error-message-string err)))))
      ;; The error callback
      (lambda (msg) (funcall callback 'errored msg)))))
 
