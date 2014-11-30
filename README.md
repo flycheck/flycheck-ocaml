@@ -38,7 +38,12 @@ Usage
 -----
 
 Just use Flycheck as usual in Tuareg Mode buffers.  Flycheck will automatically
-use the new `ocaml-merlin` syntax checker if Merlin Mode is enabled.
+use the new `ocaml-merlin` syntax checker if Merlin Mode is enabled, and if
+Merlin's own error checking (`merlin-error-after-save`) is disabled.
+
+If you enable Merlin's error checking with `M-x merlin-toggle-view-errors`,
+Flycheck will not use the `ocaml-merlin` syntax checker anymore, to avoid
+duplicate overlays.
 
 License
 -------
