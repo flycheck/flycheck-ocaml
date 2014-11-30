@@ -67,6 +67,31 @@
                      (list (flycheck-error-new-at 4 9 'warning "this pattern-matching is not exhaustive. Here is an example of a value that is not matched: Bar"
                                                   :checker 'ocaml-merlin)))))))
 
+(defmacro flycheck-ocaml-with-ocaml-merlin (&rest body)
+  "Run BODY with a setup for `ocaml-merlin'."
+  (declare (indent 0))
+  ;; To use the merlin syntax checker, we need to enable merlin mode, disable
+  ;; its own error checking, and actually register the checker temporarily,
+  ;; since it's not registered by default.
+  `(let ((tuareg-mode-hook (list #'merlin-mode))
+         (merlin-error-after-save nil)
+         (flycheck-checkers '(ocaml-merlin)))
+     ,@body))
+
+(flycheck-ert-def-checker-test ocaml-merlin ocaml error
+  (flycheck-ocaml-with-ocaml-merlin
+    (flycheck-ert-should-syntax-check
+     "ocaml-error.ml" 'tuareg-mode
+     '(1 23 error "This expression has type unit but an expression was expected of type string"
+         :checker ocaml-merlin))))
+
+(flycheck-ert-def-checker-test ocaml-merlin ocaml warning
+  (flycheck-ocaml-with-ocaml-merlin
+    (flycheck-ert-should-syntax-check
+     "ocaml-warning.ml" 'tuareg-mode
+     '(4 9 warning "this pattern-matching is not exhaustive. Here is an example of a value that is not matched: Bar"
+         :checker ocaml-merlin))))
+
 (flycheck-ert-initialize flycheck-ocaml-test-directory)
 
 (provide 'flycheck-ocaml-test)
