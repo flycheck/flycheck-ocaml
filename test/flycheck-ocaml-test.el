@@ -52,8 +52,19 @@
                              alist 'ocaml-merlin (current-buffer)))
                           (flycheck-ocaml-test-get-merlin-errors))))
       (should (equal errors
-                     (list (flycheck-error-new-at 1 23 'error "Error: This expression has type unit but an expression was expected of type
-         string"
+                     (list (flycheck-error-new-at 1 23 'error "This expression has type unit but an expression was expected of type string"
+                                                  :checker 'ocaml-merlin)))))))
+
+(ert-deftest flycheck-ocaml-merlin-parse-error/warning ()
+  :tags '(parsing)
+  (flycheck-ert-with-resource-buffer "ocaml-warning.ml"
+    (tuareg-mode)
+    (let ((errors (mapcar (lambda (alist)
+                            (flycheck-ocaml-merlin-parse-error
+                             alist 'ocaml-merlin (current-buffer)))
+                          (flycheck-ocaml-test-get-merlin-errors))))
+      (should (equal errors
+                     (list (flycheck-error-new-at 4 9 'warning "this pattern-matching is not exhaustive. Here is an example of a value that is not matched: Bar"
                                                   :checker 'ocaml-merlin)))))))
 
 (flycheck-ert-initialize flycheck-ocaml-test-directory)

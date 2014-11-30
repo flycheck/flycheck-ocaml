@@ -36,19 +36,55 @@
 (require 'merlin)
 (require 'flycheck)
 
+(defconst flycheck-ocaml-merlin-message-re
+  (rx string-start
+      ;; Skip over leading spaces and punctuation
+      (zero-or-more (any punct space control))
+      ;; Take the level...
+      (group-n 1 (or "Warning" "Error"))
+      ;; ...and skip over trailing digits (e.g. Warning 8:)
+      (zero-or-more (any space digit)) ": "
+      ;; The rest is the real error message
+      (group-n 2 (one-or-more anything)) string-end)
+  "Regular expression to parse a Merlin error message.")
+
+(defun flycheck-ocaml-merlin-parse-message (message)
+  "Parse an error MESSAGE from a Merlin error.
+
+Return `(LEVEL . PARSED-MESSAGE)', where LEVEL is the Flycheck
+error level, and PARSED-MESSAGE is the real error message with
+irrelevant parts removed."
+  (when (string-match flycheck-ocaml-merlin-message-re message)
+    (let ((level (pcase (match-string 1 message)
+                   (`"Warning" 'warning)
+                   (`"Error" 'error)
+                   (level (lwarn 'flycheck-ocaml :error
+                                 "Unknown error level %S" level)))))
+      (cons level
+            ;; Collapse whitespace in error messages
+            (replace-regexp-in-string (rx (one-or-more (any space "\n" "\r")))
+                                      " " (string-trim (match-string 2 message))
+                                      'fixed-case 'literal)))))
+
 (defun flycheck-ocaml-merlin-parse-error (alist checker buffer)
   "Parse a Merlin error ALIST from CHECKER in BUFFER into a `flycheck-error'.
 
 Return the corresponding `flycheck-error'."
-  (let* ((message (cdr (assq 'message alist)))
+  (let* ((orig-message (cdr (assq 'message alist)))
          (start (cdr (assq 'start alist)))
          (line (or (cdr (assq 'line start)) 1))
          (column (cdr (assq 'col start))))
-    (when message
-      (flycheck-error-new-at line column 'error message
-                             :checker checker
-                             :buffer buffer
-                             :filename (buffer-file-name)))))
+    (when orig-message
+      (pcase-let* ((`(,level . ,message)
+                    (flycheck-ocaml-merlin-parse-message orig-message)))
+        (if level
+            (flycheck-error-new-at line column level message
+                                   :checker checker
+                                   :buffer buffer
+                                   :filename (buffer-file-name))
+          (lwarn 'flycheck-ocaml :error
+                 "Failed to parse Merlin error message %S from %S"
+                 orig-message alist))))))
 
 (defun flycheck-ocaml-merlin-start (checker callback)
   "Start a Merlin syntax check with CHECKER.
