@@ -3,6 +3,7 @@ flycheck-ocaml — Flycheck for OCaml
 
 [![License GPL 3][badge-license]][copying]
 [![MELPA][badge-melpa]](http://melpa.org/#/flycheck-ocaml)
+[![MELPA Stable][badge-melpa-stable]](http://stable.melpa.org/#/flycheck-ocaml)
 [![Build Status][badge-travis]](https://travis-ci.org/flycheck/flycheck-ocaml)
 
 Add OCaml support to [Flycheck][]:
@@ -74,6 +75,7 @@ See [`COPYING`][copying] for details.
 [badge-license]: https://img.shields.io/badge/license-GPL_3-green.svg?dummy
 [COPYING]: https://github.com/flycheck/flycheck-ocaml/blob/master/COPYING
 [badge-melpa]: http://melpa.org/packages/flycheck-ocaml-badge.svg
+[badge-melpa-stable]: http://stable.melpa.org/packages/flycheck-ocaml-badge.svg
 [badge-travis]: https://travis-ci.org/flycheck/flycheck-ocaml.svg?branch=master
 [Flycheck]: http://www.flycheck.org
 [Merlin]: https://github.com/the-lambda-church/merlin
