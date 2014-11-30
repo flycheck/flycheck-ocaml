@@ -79,7 +79,11 @@ See URL `https://github.com/the-lambda-church/merlin'."
   :predicate (lambda () (and merlin-mode
                              ;; Don't check if Merlin's own checking is
                              ;; enabled, to avoid duplicate overlays
-                             (not merlin-error-after-save))))
+                             (not merlin-error-after-save)
+                             ;; Only check saved buffers, like Merlin does,
+                             ;; because Merlin freezes if the buffer contents
+                             ;; are synced too frequently.
+                             (flycheck-buffer-saved-p))))
 
 ;;;###autoload
 (defun flycheck-ocaml-setup ()
