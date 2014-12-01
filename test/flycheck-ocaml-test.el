@@ -37,16 +37,24 @@
     (expand-file-name "test/" (locate-dominating-file filename "Cask")))
   "Test suite directory, for resource loading.")
 
+(defun flycheck-ocaml-test-tuareg-mode ()
+  "Prepare a buffer with Tuareg Mode.
+
+Switch to Tuareg Mode, enable Merlin Mode, and disable Merlin
+error checking."
+  (tuareg-mode)
+  (merlin-mode)
+  (setq-local merlin-error-after-save nil))
+
 (defun flycheck-ocaml-test-get-merlin-errors ()
   "Get Merlin errors in the current buffer."
-  (merlin-mode)
   (merlin-sync-to-point (point-max) 'skip-marker)
   (merlin-send-command 'errors))
 
 (ert-deftest flycheck-ocaml-merlin-parse-error/error ()
   :tags '(parsing)
   (flycheck-ert-with-resource-buffer "ocaml-error.ml"
-    (tuareg-mode)
+    (flycheck-ocaml-test-tuareg-mode)
     (let ((errors (mapcar (lambda (alist)
                             (flycheck-ocaml-merlin-parse-error
                              alist 'ocaml-merlin (current-buffer)))
@@ -58,7 +66,7 @@
 (ert-deftest flycheck-ocaml-merlin-parse-error/warning ()
   :tags '(parsing)
   (flycheck-ert-with-resource-buffer "ocaml-warning.ml"
-    (tuareg-mode)
+    (flycheck-ocaml-test-tuareg-mode)
     (let ((errors (mapcar (lambda (alist)
                             (flycheck-ocaml-merlin-parse-error
                              alist 'ocaml-merlin (current-buffer)))
@@ -67,28 +75,17 @@
                      (list (flycheck-error-new-at 4 9 'warning "this pattern-matching is not exhaustive. Here is an example of a value that is not matched: Bar"
                                                   :checker 'ocaml-merlin)))))))
 
-(defmacro flycheck-ocaml-with-ocaml-merlin (&rest body)
-  "Run BODY with a setup for `ocaml-merlin'."
-  (declare (indent 0))
-  ;; To use the merlin syntax checker, we need to enable merlin mode, disable
-  ;; its own error checking, and actually register the checker temporarily,
-  ;; since it's not registered by default.
-  `(let ((tuareg-mode-hook (list #'merlin-mode))
-         (merlin-error-after-save nil)
-         (flycheck-checkers '(ocaml-merlin)))
-     ,@body))
-
 (flycheck-ert-def-checker-test ocaml-merlin ocaml error
-  (flycheck-ocaml-with-ocaml-merlin
+  (let ((flycheck-checkers '(ocaml-merlin)))
     (flycheck-ert-should-syntax-check
-     "ocaml-error.ml" 'tuareg-mode
+     "ocaml-error.ml" 'flycheck-ocaml-test-tuareg-mode
      '(1 23 error "This expression has type unit but an expression was expected of type string"
          :checker ocaml-merlin))))
 
 (flycheck-ert-def-checker-test ocaml-merlin ocaml warning
-  (flycheck-ocaml-with-ocaml-merlin
+  (let ((flycheck-checkers '(ocaml-merlin)))
     (flycheck-ert-should-syntax-check
-     "ocaml-warning.ml" 'tuareg-mode
+     "ocaml-warning.ml" 'flycheck-ocaml-test-tuareg-mode
      '(4 9 warning "this pattern-matching is not exhaustive. Here is an example of a value that is not matched: Bar"
          :checker ocaml-merlin))))
 
