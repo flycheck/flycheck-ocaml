@@ -90,8 +90,16 @@ Return the corresponding `flycheck-error'."
   "Start a Merlin syntax check with CHECKER.
 
 CALLBACK is the status callback passed by Flycheck."
-  ;; Sync the buffer contents with Merlin.
-  (merlin-sync-to-point (point-max) t)
+  (when (flycheck-buffer-saved-p)
+    ;; Sync the buffer contents with Merlin, if the buffer is saved, like Merlin
+    ;; does.  Ideally, we'd sync on every check, but Merlin tends to freeze
+    ;; randomly when synching too frequently (see
+    ;; https://github.com/the-lambda-church/merlin/issues/320).
+    ;;
+    ;; So now we just get the old errors when checking a modified buffer, but at
+    ;; least we get any errors at all, so that the mode line display and the
+    ;; error list can show something that's at least half way correct.
+    (merlin-sync-to-point (point-max) t))
   ;; Put the current buffer into the closure environment so that we have access
   ;; to it later.
   (let ((buffer (current-buffer)))
@@ -118,11 +126,7 @@ See URL `https://github.com/the-lambda-church/merlin'."
   :predicate (lambda () (and merlin-mode
                              ;; Don't check if Merlin's own checking is
                              ;; enabled, to avoid duplicate overlays
-                             (not merlin-error-after-save)
-                             ;; Only check saved buffers, like Merlin does,
-                             ;; because Merlin freezes if the buffer contents
-                             ;; are synced too frequently.
-                             (flycheck-buffer-saved-p))))
+                             (not merlin-error-after-save))))
 
 ;;;###autoload
 (defun flycheck-ocaml-setup ()
