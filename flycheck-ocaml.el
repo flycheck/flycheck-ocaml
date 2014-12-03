@@ -84,7 +84,8 @@ Return the corresponding `flycheck-error'."
                                    :filename (buffer-file-name))
           (lwarn 'flycheck-ocaml :error
                  "Failed to parse Merlin error message %S from %S"
-                 orig-message alist))))))
+                 orig-message alist)
+          nil)))))
 
 (defun flycheck-ocaml-merlin-start (checker callback)
   "Start a Merlin syntax check with CHECKER.
