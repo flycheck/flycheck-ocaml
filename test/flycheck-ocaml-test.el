@@ -60,7 +60,7 @@ error checking."
                              alist 'ocaml-merlin (current-buffer)))
                           (flycheck-ocaml-test-get-merlin-errors))))
       (should (equal errors
-                     (list (flycheck-error-new-at 1 23 'error "This expression has type unit but an expression was expected of type string"
+                     (list (flycheck-error-new-at 1 24 'error "This expression has type unit but an expression was expected of type string"
                                                   :checker 'ocaml-merlin)))))))
 
 (ert-deftest flycheck-ocaml-merlin-parse-error/warning ()
@@ -72,28 +72,28 @@ error checking."
                              alist 'ocaml-merlin (current-buffer)))
                           (flycheck-ocaml-test-get-merlin-errors))))
       (should (equal errors
-                     (list (flycheck-error-new-at 4 9 'warning "this pattern-matching is not exhaustive. Here is an example of a value that is not matched: Bar"
+                     (list (flycheck-error-new-at 4 10 'warning "this pattern-matching is not exhaustive. Here is an example of a value that is not matched: Bar"
                                                   :checker 'ocaml-merlin)))))))
 
 (flycheck-ert-def-checker-test ocaml-merlin ocaml error
   (let ((flycheck-checkers '(ocaml-merlin)))
     (flycheck-ert-should-syntax-check
      "ocaml-error.ml" 'flycheck-ocaml-test-tuareg-mode
-     '(1 23 error "This expression has type unit but an expression was expected of type string"
+     '(1 24 error "This expression has type unit but an expression was expected of type string"
          :checker ocaml-merlin))))
 
 (flycheck-ert-def-checker-test ocaml-merlin ocaml warning
   (let ((flycheck-checkers '(ocaml-merlin)))
     (flycheck-ert-should-syntax-check
      "ocaml-warning.ml" 'flycheck-ocaml-test-tuareg-mode
-     '(4 9 warning "this pattern-matching is not exhaustive. Here is an example of a value that is not matched: Bar"
+     '(4 10 warning "this pattern-matching is not exhaustive. Here is an example of a value that is not matched: Bar"
          :checker ocaml-merlin))))
 
 (flycheck-ert-def-checker-test ocaml-merlin ocaml syntax-error
   (let ((flycheck-checkers '(ocaml-merlin)))
     (flycheck-ert-should-syntax-check
      "ocaml-syntax-error.ml" 'flycheck-ocaml-test-tuareg-mode
-     '(3 nil error "Syntax error inside let, expecting <expression>"
+     '(3 1 error "Syntax error inside let, expecting <expression>"
          :checker ocaml-merlin))))
 
 (flycheck-ert-initialize flycheck-ocaml-test-directory)
