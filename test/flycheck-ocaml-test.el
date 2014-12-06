@@ -89,6 +89,13 @@ error checking."
      '(4 9 warning "this pattern-matching is not exhaustive. Here is an example of a value that is not matched: Bar"
          :checker ocaml-merlin))))
 
+(flycheck-ert-def-checker-test ocaml-merlin ocaml syntax-error
+  (let ((flycheck-checkers '(ocaml-merlin)))
+    (flycheck-ert-should-syntax-check
+     "ocaml-syntax-error.ml" 'flycheck-ocaml-test-tuareg-mode
+     '(3 nil error "Syntax error inside let, expecting <expression>"
+         :checker ocaml-merlin))))
+
 (flycheck-ert-initialize flycheck-ocaml-test-directory)
 
 (provide 'flycheck-ocaml-test)

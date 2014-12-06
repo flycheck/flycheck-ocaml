@@ -77,15 +77,11 @@ Return the corresponding `flycheck-error'."
     (when orig-message
       (pcase-let* ((`(,level . ,message)
                     (flycheck-ocaml-merlin-parse-message orig-message)))
-        (if level
-            (flycheck-error-new-at line column level message
-                                   :checker checker
-                                   :buffer buffer
-                                   :filename (buffer-file-name))
-          (lwarn 'flycheck-ocaml :error
-                 "Failed to parse Merlin error message %S from %S"
-                 orig-message alist)
-          nil)))))
+        (flycheck-error-new-at line column (or level 'error)
+                               (or message orig-message)
+                               :checker checker
+                               :buffer buffer
+                               :filename (buffer-file-name))))))
 
 (defun flycheck-ocaml-merlin-start (checker callback)
   "Start a Merlin syntax check with CHECKER.
