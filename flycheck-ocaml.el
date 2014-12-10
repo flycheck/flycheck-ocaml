@@ -134,6 +134,7 @@ See URL `https://github.com/the-lambda-church/merlin'."
   "Setup Flycheck OCaml.
 
 Add `ocaml-merlin' to `flycheck-checkers'."
+  (interactive)
   (add-to-list 'flycheck-checkers 'ocaml-merlin))
 
 (provide 'flycheck-ocaml)
