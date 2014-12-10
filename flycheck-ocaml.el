@@ -75,7 +75,7 @@ Return the corresponding `flycheck-error'."
          (line (or (cdr (assq 'line start)) 1))
          (column (cdr (assq 'col start))))
     (when orig-message
-      ;; OCaml colums seem to be zero-based, see
+      ;; OCaml columns seem to be zero-based, see
       ;; https://github.com/flycheck/flycheck-ocaml/issues/2
       (when column
         (setq column (1+ column)))
