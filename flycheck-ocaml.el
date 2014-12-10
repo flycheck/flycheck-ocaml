@@ -87,6 +87,23 @@ Return the corresponding `flycheck-error'."
                                :buffer buffer
                                :filename (buffer-file-name))))))
 
+(defun flycheck-verify-ocaml-merlin (_checker)
+  "Verify the OCaml Merlin syntax checker."
+  (let ((command (executable-find (merlin-command))))
+    (list
+     (flycheck-verification-result-new
+      :label "Merlin command"
+      :message (if command (format "Found at %s" command) "Not found")
+      :face (if command 'success '(bold error)))
+     (flycheck-verification-result-new
+      :label "Merlin mode"
+      :message (if merlin-mode "enabled" "disabled")
+      :face (if merlin-mode 'success '(bold warning)))
+     (flycheck-verification-result-new
+      :label "Merlin error checking"
+      :message (if merlin-error-after-save "enabled" "disabled")
+      :face (if merlin-error-after-save '(bold warning) 'success)))))
+
 (defun flycheck-ocaml-merlin-start (checker callback)
   "Start a Merlin syntax check with CHECKER.
 
@@ -123,6 +140,7 @@ CALLBACK is the status callback passed by Flycheck."
 
 See URL `https://github.com/the-lambda-church/merlin'."
   :start #'flycheck-ocaml-merlin-start
+  :verify #'flycheck-verify-ocaml-merlin
   :modes '(caml-mode tuareg-mode)
   :predicate (lambda () (and merlin-mode
                              ;; Don't check if Merlin's own checking is
