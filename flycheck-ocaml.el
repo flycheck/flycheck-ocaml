@@ -33,6 +33,7 @@
 
 ;;; Code:
 
+(require 'let-alist)
 (require 'merlin)
 (require 'flycheck)
 
