@@ -6,7 +6,7 @@
 ;; URL: https://github.com/flycheck/flycheck-ocaml
 ;; Keywords: convenience, tools, languages
 ;; Version: 0.2-cvs
-;; Package-Requires: ((emacs "24.1") (flycheck "0.22-cvs1") (merlin "2.0"))
+;; Package-Requires: ((emacs "24.1") (flycheck "0.22-cvs1") (merlin "2.0") (let-alist "1.0.1"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -70,22 +70,21 @@ irrelevant parts removed."
   "Parse a Merlin error ALIST from CHECKER in BUFFER into a `flycheck-error'.
 
 Return the corresponding `flycheck-error'."
-  (let* ((orig-message (cdr (assq 'message alist)))
-         (start (cdr (assq 'start alist)))
-         (line (or (cdr (assq 'line start)) 1))
-         (column (cdr (assq 'col start))))
-    (when orig-message
-      ;; OCaml columns seem to be zero-based, see
-      ;; https://github.com/flycheck/flycheck-ocaml/issues/2
-      (when column
-        (setq column (1+ column)))
+  (let-alist alist
+    (when .message
       (pcase-let* ((`(,level . ,message)
-                    (flycheck-ocaml-merlin-parse-message orig-message)))
-        (flycheck-error-new-at line column (or level 'error)
-                               (or message orig-message)
-                               :checker checker
-                               :buffer buffer
-                               :filename (buffer-file-name))))))
+                    (flycheck-ocaml-merlin-parse-message .message))
+                   (message (or message .message))
+                   (level (or level 'error)))
+        (let-alist .start
+          ;; OCaml columns seem to be zero-based, see
+          ;; https://github.com/flycheck/flycheck-ocaml/issues/2
+          (flycheck-error-new-at (or .line 1)
+                                 (when .col (1+ .col))
+                                 level message
+                                 :checker checker
+                                 :buffer buffer
+                                 :filename (buffer-file-name)))))))
 
 (defun flycheck-verify-ocaml-merlin (_checker)
   "Verify the OCaml Merlin syntax checker."
