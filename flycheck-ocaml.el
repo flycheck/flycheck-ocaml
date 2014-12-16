@@ -33,7 +33,9 @@
 
 ;;; Code:
 
-(require 'let-alist)
+(eval-when-compile
+  (require 'let-alist))
+
 (require 'merlin)
 (require 'flycheck)
 
