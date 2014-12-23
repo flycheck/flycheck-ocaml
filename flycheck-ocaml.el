@@ -81,7 +81,7 @@ Return the corresponding `flycheck-error'."
         ;; https://github.com/flycheck/flycheck-ocaml/issues/2
         (flycheck-error-new-at (or .start.line 1)
                                (when .start.col (1+ .start.col))
-                               (or level 'error) (or .message message)
+                               (or level 'error) (or message .message)
                                :checker checker
                                :buffer buffer
                                :filename (buffer-file-name))))))
