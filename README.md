@@ -48,13 +48,6 @@ If you enable Merlin's error checking with `M-x merlin-toggle-view-errors`,
 Flycheck will not use the `ocaml-merlin` syntax checker anymore, to avoid
 duplicate overlays.
 
-Known issues
-------------
-
-Like Merlin itself `ocaml-merlin` only checks buffers on save.  While Flycheck
-itself is capable of on-the-fly checking while editing, Merlin does not handle
-this well, and tends to freeze if the buffer is checked too frequently.
-
 License
 -------
 
