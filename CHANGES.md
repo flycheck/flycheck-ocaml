@@ -1,5 +1,5 @@
-02 (Dec 25, 2014)
-=================
+0.2 (Dec 25, 2014)
+==================
 
 - Fix warning about parsing messages [GH-1]
 - Fix error column offsets [GH-2]
