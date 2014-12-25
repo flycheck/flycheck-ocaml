@@ -1,5 +1,5 @@
-master (in development)
-=======================
+02 (Dec 25, 2014)
+=================
 
 - Fix warning about parsing messages [GH-1]
 - Fix error column offsets [GH-2]
