@@ -6,7 +6,7 @@
 ;; URL: https://github.com/flycheck/flycheck-ocaml
 ;; Keywords: convenience, tools, languages
 ;; Version: 0.3-cvs
-;; Package-Requires: ((emacs "24.1") (flycheck "0.22-cvs1") (merlin "2.0") (let-alist "1.0.3"))
+;; Package-Requires: ((emacs "24.1") (flycheck "0.22") (merlin "2.0") (let-alist "1.0.3"))
 
 ;; This file is not part of GNU Emacs.
 
