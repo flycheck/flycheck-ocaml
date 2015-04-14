@@ -93,7 +93,7 @@ error checking."
   (let ((flycheck-checkers '(ocaml-merlin)))
     (flycheck-ert-should-syntax-check
      "ocaml-syntax-error.ml" 'flycheck-ocaml-test-tuareg-mode
-     '(3 1 error "Syntax error inside `let', expecting <expression>"
+     '(3 1 error "Syntax error inside `let', expecting expression"
          :checker ocaml-merlin))))
 
 (flycheck-ert-initialize flycheck-ocaml-test-directory)
