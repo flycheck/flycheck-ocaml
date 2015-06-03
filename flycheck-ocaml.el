@@ -101,26 +101,39 @@ Return the corresponding `flycheck-error'."
       :message (if merlin-error-after-save "enabled" "disabled")
       :face (if merlin-error-after-save '(bold warning) 'success)))))
 
+(defvar-local flycheck-ocaml-merlin-last-errors nil
+  "Caches last errors received from Merlin.")
+
 (defun flycheck-ocaml-merlin-start (checker callback)
   "Start a Merlin syntax check with CHECKER.
 
 CALLBACK is the status callback passed by Flycheck."
-  (unless (merlin--process-busy)
-    (merlin-sync-to-point (point-max) t))
-  ;; Put the current buffer into the closure environment so that we have access
-  ;; to it later.
-  (merlin-send-command-async
-   'errors
-   (lambda (data)
-     (condition-case err
-         (let ((errors (mapcar
-                        (lambda (alist)
-                          (flycheck-ocaml-merlin-parse-error alist checker))
-                        data)))
-           (funcall callback 'finished (delq nil errors)))
-       (error (funcall callback 'errored (error-message-string err)))))
-   ;; The error callback
-   (lambda (msg) (funcall callback 'errored msg))))
+  (if (merlin--process-busy)
+      ;; If Merlin is busy we can't tell it to check the current buffer,
+      ;; because, well, it's busy :) Instead we fall back to the errors from the
+      ;; last succcessful check with Merlin to avoid that the user perceives the
+      ;; buffer as clean even though it isn't and that the error list changes
+      ;; frequently.
+      flycheck-ocaml-merlin-last-errors
+    (merlin-sync-to-point (point-max) t)
+    (merlin-send-command-async
+     'errors
+     (lambda (data)
+       (condition-case err
+           (let ((errors (delq nil
+                               (mapcar
+                                (lambda (alist)
+                                  (flycheck-ocaml-merlin-parse-error alist
+                                                                     checker))
+                                data))))
+             ;; Cache the last errors, for use when Merlin is busy.
+             (setq flycheck-ocaml-merlin-last-errors errors)
+             (funcall callback 'finished errors))
+         (error (funcall callback 'errored (error-message-string err)))))
+     ;; The error callback
+     (lambda (msg)
+       (setq flycheck-ocaml-merlin-last-errors nil)
+       (funcall callback 'errored msg)))))
 
 (flycheck-define-generic-checker 'ocaml-merlin
   "A syntax checker for OCaml using Merlin Mode.
