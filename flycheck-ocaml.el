@@ -69,8 +69,8 @@ irrelevant parts removed."
                                       " " (string-trim (match-string 2 message))
                                       'fixed-case 'literal)))))
 
-(defun flycheck-ocaml-merlin-parse-error (alist checker buffer)
-  "Parse a Merlin error ALIST from CHECKER in BUFFER into a `flycheck-error'.
+(defun flycheck-ocaml-merlin-parse-error (alist checker)
+  "Parse a Merlin error ALIST from CHECKER into a `flycheck-error'.
 
 Return the corresponding `flycheck-error'."
   (let-alist alist
@@ -82,9 +82,7 @@ Return the corresponding `flycheck-error'."
         (flycheck-error-new-at (or .start.line 1)
                                (when .start.col (1+ .start.col))
                                (or level 'error) (or message .message)
-                               :checker checker
-                               :buffer buffer
-                               :filename (buffer-file-name))))))
+                               :checker checker)))))
 
 (defun flycheck-verify-ocaml-merlin (_checker)
   "Verify the OCaml Merlin syntax checker."
@@ -110,20 +108,18 @@ CALLBACK is the status callback passed by Flycheck."
   (merlin-sync-to-point (point-max) t)
   ;; Put the current buffer into the closure environment so that we have access
   ;; to it later.
-  (let ((buffer (current-buffer)))
-    (merlin-send-command-async
-     'errors
-     (lambda (data)
-       (condition-case err
-           (let ((errors (mapcar
-                          (lambda (alist)
-                            (flycheck-ocaml-merlin-parse-error alist checker
-                                                               buffer))
-                          data)))
-             (funcall callback 'finished (delq nil errors)))
-         (error (funcall callback 'errored (error-message-string err)))))
-     ;; The error callback
-     (lambda (msg) (funcall callback 'errored msg)))))
+  (merlin-send-command-async
+   'errors
+   (lambda (data)
+     (condition-case err
+         (let ((errors (mapcar
+                        (lambda (alist)
+                          (flycheck-ocaml-merlin-parse-error alist checker))
+                        data)))
+           (funcall callback 'finished (delq nil errors)))
+       (error (funcall callback 'errored (error-message-string err)))))
+   ;; The error callback
+   (lambda (msg) (funcall callback 'errored msg))))
 
 (flycheck-define-generic-checker 'ocaml-merlin
   "A syntax checker for OCaml using Merlin Mode.
