@@ -105,7 +105,8 @@ Return the corresponding `flycheck-error'."
   "Start a Merlin syntax check with CHECKER.
 
 CALLBACK is the status callback passed by Flycheck."
-  (merlin-sync-to-point (point-max) t)
+  (unless (merlin--process-busy)
+    (merlin-sync-to-point (point-max) t))
   ;; Put the current buffer into the closure environment so that we have access
   ;; to it later.
   (merlin-send-command-async
