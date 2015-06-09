@@ -40,7 +40,12 @@
 (require 'merlin)
 (require 'flycheck)
 
-(defvar merlin-command-priority) ;; enjoy dynamic scoping
+;; Mark `merlin-command-priority' as dynamic variable, to make sure that this
+;; file is compiled correctly against older Merlin versions which don't provide
+;; this variable yet.  Otherwise the byte compiler would treat it as lexical
+;; variable and elide it, and things would not work well if Merlin is updated
+;; afterwards.
+(defvar merlin-command-priority)
 
 (defconst flycheck-ocaml-merlin-message-re
   (rx string-start
