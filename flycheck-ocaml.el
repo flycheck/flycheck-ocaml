@@ -1,6 +1,7 @@
 ;;; flycheck-ocaml.el --- Flycheck: OCaml support    -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2014-2015  Sebastian Wiesner <swiesner@lunaryorn.com>
+;; Copyright (C) 2015  Frédéric Bour <frederic.bour@lakaban.net>
 
 ;; Author: Sebastian Wiesner <swiesner@lunaryorn.com>
 ;; URL: https://github.com/flycheck/flycheck-ocaml
