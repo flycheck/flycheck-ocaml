@@ -48,8 +48,8 @@ error checking."
 
 (defun flycheck-ocaml-test-get-merlin-errors ()
   "Get Merlin errors in the current buffer."
-  (merlin-sync-to-point (point-max) 'skip-marker)
-  (merlin-send-command 'errors))
+  (merlin/sync)
+  (merlin/send-command 'errors))
 
 (ert-deftest flycheck-ocaml-merlin-parse-error/error ()
   :tags '(parsing)

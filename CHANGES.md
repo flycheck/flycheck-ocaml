@@ -1,7 +1,7 @@
 master (in development)
 =======================
 
-- Fix lock up when used with Merlin completion [GH-3] [GH-4]
+- Fix lock up when used with Merlin completion [GH-3] [GH-4] [GH-5]
 
 0.2 (Dec 25, 2014)
 ==================
