@@ -1,5 +1,5 @@
-master (in development)
-=======================
+0.3 (Nov 1, 2015)
+=================
 
 - Fix lock up when used with Merlin completion [GH-3] [GH-4] [GH-5]
 
