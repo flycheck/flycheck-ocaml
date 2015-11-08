@@ -1,21 +1,19 @@
 language: emacs-lisp
+sudo: false
 env:
-  - EMACS=emacs24
-  - EMACS=emacs-snapshot
+  - EMACS_VERSION=24.3
+  - EMACS_VERSION=24.5
+  - EMACS_VERSION=snapshot EMACSFLAGS='--eval "(setq byte-compile-error-on-warn t)"'
 before_install:
-  # PPAs for Emacs and OCaml
-  - sudo add-apt-repository -y ppa:cassou/emacs
-  - sudo add-apt-repository -y ppa:ubuntu-elisp/ppa
-  - sudo add-apt-repository -y ppa:avsm/ocaml42+opam12
-  - sudo apt-get update -qq
-  # Install Emacs and OCaml
-  - sudo apt-get install -qq -yy ${EMACS}-nox
-  - sudo apt-get install ocaml opam
-  # Bootstrap and install Cask
-  - curl -fsSkL https://raw.github.com/cask/cask/master/go | python
-  - export PATH="${HOME}/.cask/bin:$PATH"
-  # Initialize OPAM
-  - opam init --yes
+  # Install a proper Emacs for testing
+  - export PATH="$HOME/bin:$PATH"
+  - wget 'https://raw.githubusercontent.com/flycheck/emacs-travis/master/emacs-travis.mk'
+  - make -f emacs-travis.mk install_emacs
+  - make -f emacs-travis.mk install_cask
+  - emacs --version
+  # Install OPAM and OCaml
+  - wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s "${HOME}/bin"
+  - opam init --yes --comp '4.02.3'
   - eval $(opam config env)
 install:
   - opam install --yes merlin
