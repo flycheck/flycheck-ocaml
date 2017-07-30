@@ -86,11 +86,7 @@ irrelevant parts removed."
                    ((or `"Error" `nil) 'error)
                    (level (lwarn 'flycheck-ocaml :error
                                  "Unknown error level %S" level)))))
-      (cons level
-            ;; Collapse whitespace in error messages
-            (replace-regexp-in-string (rx (one-or-more (any space "\n" "\r")))
-                                      " " (string-trim (match-string 2 message))
-                                      'fixed-case 'literal)))))
+      (cons level (string-trim (match-string 2 message))))))
 
 (defun flycheck-ocaml-merlin-parse-error (alist checker)
   "Parse a Merlin error ALIST from CHECKER into a `flycheck-error'.

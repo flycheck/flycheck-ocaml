@@ -59,7 +59,7 @@ error checking."
                              alist 'ocaml-merlin))
                           (flycheck-ocaml-test-get-merlin-errors))))
       (should (equal errors
-                     (list (flycheck-error-new-at 1 24 'error "This expression has type unit but an expression was expected of type string"
+                     (list (flycheck-error-new-at 1 24 'error "This expression has type unit but an expression was expected of type\n         string"
                                                   :checker 'ocaml-merlin)))))))
 
 (ert-deftest flycheck-ocaml-merlin-parse-error/warning ()
@@ -71,21 +71,21 @@ error checking."
                              alist 'ocaml-merlin))
                           (flycheck-ocaml-test-get-merlin-errors))))
       (should (equal errors
-                     (list (flycheck-error-new-at 4 10 'warning "this pattern-matching is not exhaustive. Here is an example of a case that is not matched: Bar"
+                     (list (flycheck-error-new-at 4 10 'warning "this pattern-matching is not exhaustive.\nHere is an example of a case that is not matched:\nBar"
                                                   :checker 'ocaml-merlin)))))))
 
 (flycheck-ert-def-checker-test ocaml-merlin ocaml error
   (let ((flycheck-checkers '(ocaml-merlin)))
     (flycheck-ert-should-syntax-check
      "ocaml-error.ml" 'flycheck-ocaml-test-tuareg-mode
-     '(1 24 error "This expression has type unit but an expression was expected of type string"
+     '(1 24 error "This expression has type unit but an expression was expected of type\n         string"
          :checker ocaml-merlin))))
 
 (flycheck-ert-def-checker-test ocaml-merlin ocaml warning
   (let ((flycheck-checkers '(ocaml-merlin)))
     (flycheck-ert-should-syntax-check
      "ocaml-warning.ml" 'flycheck-ocaml-test-tuareg-mode
-     '(4 10 warning "this pattern-matching is not exhaustive. Here is an example of a case that is not matched: Bar"
+     '(4 10 warning "this pattern-matching is not exhaustive.\nHere is an example of a case that is not matched:\nBar"
          :checker ocaml-merlin))))
 
 (flycheck-ert-def-checker-test ocaml-merlin ocaml syntax-error
