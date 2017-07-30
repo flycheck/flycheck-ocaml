@@ -48,8 +48,7 @@ error checking."
 
 (defun flycheck-ocaml-test-get-merlin-errors ()
   "Get Merlin errors in the current buffer."
-  (merlin/sync)
-  (merlin/send-command 'errors))
+  (merlin/call "errors"))
 
 (ert-deftest flycheck-ocaml-merlin-parse-error/error ()
   :tags '(parsing)
@@ -72,7 +71,7 @@ error checking."
                              alist 'ocaml-merlin))
                           (flycheck-ocaml-test-get-merlin-errors))))
       (should (equal errors
-                     (list (flycheck-error-new-at 4 10 'warning "this pattern-matching is not exhaustive. Here is an example of a value that is not matched: Bar"
+                     (list (flycheck-error-new-at 4 10 'warning "this pattern-matching is not exhaustive. Here is an example of a case that is not matched: Bar"
                                                   :checker 'ocaml-merlin)))))))
 
 (flycheck-ert-def-checker-test ocaml-merlin ocaml error
@@ -86,14 +85,14 @@ error checking."
   (let ((flycheck-checkers '(ocaml-merlin)))
     (flycheck-ert-should-syntax-check
      "ocaml-warning.ml" 'flycheck-ocaml-test-tuareg-mode
-     '(4 10 warning "this pattern-matching is not exhaustive. Here is an example of a value that is not matched: Bar"
+     '(4 10 warning "this pattern-matching is not exhaustive. Here is an example of a case that is not matched: Bar"
          :checker ocaml-merlin))))
 
 (flycheck-ert-def-checker-test ocaml-merlin ocaml syntax-error
   (let ((flycheck-checkers '(ocaml-merlin)))
     (flycheck-ert-should-syntax-check
      "ocaml-syntax-error.ml" 'flycheck-ocaml-test-tuareg-mode
-     '(3 1 error "Syntax error inside `let', expecting expression"
+     '(2 1 error "Syntax error, expecting expr"
          :checker ocaml-merlin))))
 
 (flycheck-ert-initialize flycheck-ocaml-test-directory)
