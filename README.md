@@ -24,7 +24,7 @@ In your [`Cask`][cask] file:
 (depends-on "flycheck-ocaml")
 ```
 
-In your `init.el`:
+For OCaml, add this to your `init.el`:
 
 ```cl
 (with-eval-after-load 'merlin
@@ -35,6 +35,20 @@ In your `init.el`:
   (flycheck-ocaml-setup))
 
 (add-hook 'tuareg-mode-hook #'merlin-mode)
+```
+
+For ReasonML, add this to your `init.el`:
+
+``` cl
+(use-package flycheck-ocaml
+  :ensure t
+  :config
+  (add-hook 'reason-mode-hook
+            (lambda ()
+              ;; disable Merlin's own error checking
+              (setq-local merlin-error-after-save nil)    
+              ;; enable Flycheck checker
+              (flycheck-ocaml-setup))))
 ```
 
 Usage
