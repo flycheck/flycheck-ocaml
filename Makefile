@@ -6,18 +6,17 @@ PKGDIR := $(shell EMACS=$(EMACS) $(EASK) package-directory)
 
 export EMACS
 
-SRCS = flycheck-ocaml.el
-OBJECTS = $(SRCS:.el=.elc)
-
 EMACSBATCH = $(EMACS) -Q --batch $(EMACSFLAGS)
 
 .PHONY: compile dist test \
 	clean clean-elc clean-dist clean-deps
 
-compile : $(OBJECTS)
+compile : dist
+	$(EASK) compile
 
 dist :
 	$(EASK) package
+	$(EASK) install
 
 deps : $(PKGDIR)
 
