@@ -11,12 +11,11 @@ EMACSBATCH = $(EMACS) -Q --batch $(EMACSFLAGS)
 .PHONY: compile dist test \
 	clean clean-elc clean-dist clean-deps
 
-compile : dist
+compile :
 	$(EASK) compile
 
 dist :
 	$(EASK) package
-	$(EASK) install-deps
 	$(EASK) install
 
 deps : $(PKGDIR)

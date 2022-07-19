@@ -44,5 +44,6 @@ jobs:
 
     - name: Run tests
       run: |
+        make dist
         make compile
         make test
