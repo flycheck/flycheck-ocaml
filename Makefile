@@ -1,8 +1,8 @@
 EMACS = emacs
 EMACSFLAGS =
-CASK = cask
-VERSION := $(shell EMACS=$(EMACS) $(CASK) version)
-PKGDIR := $(shell EMACS=$(EMACS) $(CASK) package-directory)
+EASK = eask
+VERSION := $(shell EMACS=$(EMACS) $(EASK) version)
+PKGDIR := $(shell EMACS=$(EMACS) $(EASK) package-directory)
 
 export EMACS
 
@@ -17,13 +17,13 @@ EMACSBATCH = $(EMACS) -Q --batch $(EMACSFLAGS)
 compile : $(OBJECTS)
 
 dist :
-	$(CASK) package
+	$(EASK) package
 
 deps : $(PKGDIR)
 
 # Testing
 test:
-	$(CASK) exec $(EMACSBATCH) \
+	$(EASK) exec $(EMACSBATCH) \
 		-l flycheck-ocaml.el -l test/flycheck-ocaml-test.el \
 		-f ert-run-tests-batch-and-exit
 
@@ -31,17 +31,17 @@ test:
 clean : clean-elc clean-dist clean-deps
 
 clean-elc :
-	rm -rf $(OBJECTS)
+	$(EASK) clean-elc
 
 clean-dist :
 	rm -rf $(DISTDIR)
 
 clean-deps :
-	rm -rf .cask/
+	rm -rf .eask/
 
-$(PKGDIR) : Cask
-	$(CASK) install
+$(PKGDIR) : Eask
+	$(EASK) install
 	touch $(PKGDIR)
 
 %.elc : %.el $(PKGDIR)
-	$(CASK) exec $(EMACSBATCH) -f batch-byte-compile $<
+	$(EASK) exec $(EMACSBATCH) -f batch-byte-compile $<

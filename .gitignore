@@ -2,6 +2,6 @@
 
 .dir-locals.el
 
-/.cask/
+/.eask/
 /dist/
 /build/
