@@ -1,5 +1,5 @@
 (package "flycheck-ocaml"
-         "0.4"
+         "0.4.0"
          "Flycheck: OCaml support")
 
 (website-url "https://github.com/flycheck/flycheck-ocaml")
