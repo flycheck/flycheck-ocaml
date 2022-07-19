@@ -38,6 +38,10 @@ jobs:
       with:
         version: 'snapshot'
 
+    - uses: ocaml/setup-ocaml@v2
+
+    - run: opam install --yes merlin
+
     - name: Run tests
       run: |
         make compile
