@@ -16,6 +16,7 @@ compile : dist
 
 dist :
 	$(EASK) package
+	$(EASK) install-deps
 	$(EASK) install
 
 deps : $(PKGDIR)
