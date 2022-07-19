@@ -23,6 +23,7 @@ deps : $(PKGDIR)
 
 # Testing
 test:
+	$(EASK) install-deps --dev
 	$(EASK) exec $(EMACSBATCH) \
 		-l flycheck-ocaml.el -l test/flycheck-ocaml-test.el \
 		-f ert-run-tests-batch-and-exit
