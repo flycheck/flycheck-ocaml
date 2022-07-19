@@ -39,6 +39,6 @@ jobs:
         version: 'snapshot'
 
     - name: Run tests
-      run:
+      run: |
         make compile
         make test
