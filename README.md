@@ -17,16 +17,16 @@ As usual, from [MELPA][] or [MELPA Stable][].
 
 In your [`Cask`][cask] file:
 
-```cl
+```elisp
 (source gnu)
 (source melpa)
 
 (depends-on "flycheck-ocaml")
 ```
 
-For OCaml, add this to your `init.el`:
+For OCaml (assuming you're using `tuareg-mode`), add this to your `init.el`:
 
-```cl
+```elisp
 (with-eval-after-load 'merlin
   ;; Disable Merlin's own error checking
   (setq merlin-error-after-save nil)
@@ -35,18 +35,29 @@ For OCaml, add this to your `init.el`:
   (flycheck-ocaml-setup))
 
 (add-hook 'tuareg-mode-hook #'merlin-mode)
+
+;; or this if you're into use-package
+(use-package flycheck-ocaml
+  :ensure t
+  :config
+  (add-hook 'tuareg-mode-hook
+            (lambda ()
+              ;; disable Merlin's own error checking
+              (setq-local merlin-error-after-save nil)
+              ;; enable Flycheck checker
+              (flycheck-ocaml-setup))))
 ```
 
 For ReasonML, add this to your `init.el`:
 
-``` cl
+```elisp
 (use-package flycheck-ocaml
   :ensure t
   :config
   (add-hook 'reason-mode-hook
             (lambda ()
               ;; disable Merlin's own error checking
-              (setq-local merlin-error-after-save nil)    
+              (setq-local merlin-error-after-save nil)
               ;; enable Flycheck checker
               (flycheck-ocaml-setup))))
 ```
