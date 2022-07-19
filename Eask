@@ -3,7 +3,7 @@
          "Flycheck: OCaml support")
 
 (website-url "https://github.com/flycheck/flycheck-ocaml")
-(keywords "convenience" "tools" "languages")
+(keywords "convenience" "tools" "languages" "ocaml")
 
 (package-file "flycheck-ocaml.el")
 
