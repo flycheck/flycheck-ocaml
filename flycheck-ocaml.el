@@ -107,7 +107,7 @@ Return the corresponding `flycheck-error'."
 (defun flycheck-verify-ocaml-merlin (_checker)
   "Verify the OCaml Merlin syntax checker."
   (let ((command (executable-find (merlin-command)))
-        (merlin-file (and buffer-file-name (locate-dominating-file buffer-file-name ".merlin")))
+        (merlin-file (and buffer-file-name (locate-dominating-file buffer-file-name ".merlin"))))
     (list
      (flycheck-verification-result-new
       :label "Merlin command"
