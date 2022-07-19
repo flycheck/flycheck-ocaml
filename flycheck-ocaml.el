@@ -105,12 +105,17 @@ Return the corresponding `flycheck-error'."
 
 (defun flycheck-verify-ocaml-merlin (_checker)
   "Verify the OCaml Merlin syntax checker."
-  (let ((command (executable-find (merlin-command))))
+  (let ((command (executable-find (merlin-command)))
+        (merlin-file (and buffer-file-name (locate-dominating-file buffer-file-name ".merlin")))
     (list
      (flycheck-verification-result-new
       :label "Merlin command"
       :message (if command (format "Found at %s" command) "Not found")
       :face (if command 'success '(bold error)))
+     (flycheck-verification-result-new
+      :label "Merlin file (.merlin)"
+      :message (if merlin-file (format "Found at %s" merlin-file) "Not found")
+      :face (if merlin-file 'success '(bold error)))
      (flycheck-verification-result-new
       :label "Merlin mode"
       :message (if merlin-mode "enabled" "disabled")
@@ -142,6 +147,9 @@ See URL `https://github.com/the-lambda-church/merlin'."
   :verify #'flycheck-verify-ocaml-merlin
   :modes '(caml-mode tuareg-mode reason-mode)
   :predicate (lambda () (and merlin-mode
+                             ;; Don't check if .merlin is not present somewhere
+                             ;; in the directory tree
+                             (and buffer-file-name (locate-dominating-file buffer-file-name ".merlin")
                              ;; Don't check if Merlin's own checking is
                              ;; enabled, to avoid duplicate overlays
                              (not merlin-error-after-save))))
