@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4 (2022-07-19)
+## 0.4.0 (2022-07-19)
 
 - [#10](https://github.com/flycheck/flycheck-ocaml/pull/10): Add support for `reason-mode`.
 - [#11](https://github.com/flycheck/flycheck-ocaml/issues/11): Run only when `.merlin` is present.

@@ -2,11 +2,12 @@
 
 ;; Copyright (C) 2014-2015  Sebastian Wiesner <swiesner@lunaryorn.com>
 ;; Copyright (C) 2015  Frédéric Bour <frederic.bour@lakaban.net>
+;; Copyright (C) 2022  Bozhidar Batsov <bozhidar@batsov.dev>
 
 ;; Author: Sebastian Wiesner <swiesner@lunaryorn.com>
 ;; URL: https://github.com/flycheck/flycheck-ocaml
-;; Keywords: convenience, tools, languages
-;; Version: 0.4-cvs
+;; Keywords: convenience, tools, languages, ocaml
+;; Version: 0.4.0
 ;; Package-Requires: ((emacs "24.1") (flycheck "0.22") (merlin "3.0.1") (let-alist "1.0.3"))
 
 ;; This file is not part of GNU Emacs.
