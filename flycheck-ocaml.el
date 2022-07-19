@@ -69,7 +69,7 @@
       (zero-or-more (any punct space control))
       ;; Take the level...
       (opt (: (group-n 1 (or "Warning" "Error"))
-      ;; ...and skip over trailing digits (e.g. Warning 8:)
+              ;; ...and skip over trailing digits (e.g. Warning 8:)
               (zero-or-more (any space digit)) ": "))
       ;; The rest is the real error message
       (group-n 2 (one-or-more anything)) string-end)
@@ -151,9 +151,9 @@ See URL `https://github.com/the-lambda-church/merlin'."
                              ;; Don't check if .merlin is not present somewhere
                              ;; in the directory tree
                              (and buffer-file-name (locate-dominating-file buffer-file-name ".merlin")
-                             ;; Don't check if Merlin's own checking is
-                             ;; enabled, to avoid duplicate overlays
-                             (not merlin-error-after-save))))
+                                  ;; Don't check if Merlin's own checking is
+                                  ;; enabled, to avoid duplicate overlays
+                                  (not merlin-error-after-save)))))
 
 ;;;###autoload
 (defun flycheck-ocaml-setup ()
