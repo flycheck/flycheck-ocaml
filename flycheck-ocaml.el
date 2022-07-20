@@ -150,7 +150,7 @@ See URL `https://github.com/the-lambda-church/merlin'."
   :predicate (lambda () (and merlin-mode
                              ;; Don't check if .merlin is not present somewhere
                              ;; in the directory tree
-                             (and buffer-file-name (locate-dominating-file buffer-file-name ".merlin")
+                             (and buffer-file-name (locate-dominating-file buffer-file-name ".merlin"))
                              ;; Don't check if Merlin's own checking is
                              ;; enabled, to avoid duplicate overlays
                              (not merlin-error-after-save))))
