@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1 (2022-07-20)
+
+- Fix compilation errors.
+
 ## 0.4.0 (2022-07-19)
 
 - [#10](https://github.com/flycheck/flycheck-ocaml/pull/10): Add support for `reason-mode`.
