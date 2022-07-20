@@ -5,6 +5,7 @@
 ;; Copyright (C) 2022  Bozhidar Batsov <bozhidar@batsov.dev>
 
 ;; Author: Sebastian Wiesner <swiesner@lunaryorn.com>
+;; Maintainer: Bozhidar Batsov <bozhidar@batsov.dev>
 ;; URL: https://github.com/flycheck/flycheck-ocaml
 ;; Keywords: convenience, tools, languages, ocaml
 ;; Version: 0.4.1
