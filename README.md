@@ -100,7 +100,7 @@ See [`COPYING`][copying] for details.
 [badge-melpa-stable]: http://stable.melpa.org/packages/flycheck-ocaml-badge.svg
 [badge-travis]: https://travis-ci.org/flycheck/flycheck-ocaml.svg?branch=master
 [Flycheck]: http://www.flycheck.org
-[Merlin]: https://github.com/the-lambda-church/merlin
+[Merlin]: https://github.com/ocaml/merlin
 [MELPA]: http://melpa.org
 [MELPA Stable]: http://stable.melpa.org
 [cask]: http://cask.readthedocs.org

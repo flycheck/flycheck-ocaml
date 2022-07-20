@@ -143,7 +143,7 @@ CALLBACK is the status callback passed by Flycheck."
 (flycheck-define-generic-checker 'ocaml-merlin
   "A syntax checker for OCaml using Merlin Mode.
 
-See URL `https://github.com/the-lambda-church/merlin'."
+See URL `https://github.com/ocaml/merlin'."
   :start #'flycheck-ocaml-merlin-start
   :verify #'flycheck-verify-ocaml-merlin
   :modes '(caml-mode tuareg-mode reason-mode)
