@@ -29,7 +29,7 @@
 ;;; Commentary:
 
 ;; This Flycheck extension provides a new `ocaml-merlin' syntax checker which
-;; uses Merlin Mode (see URL `https://github.com/the-lambda-church/merlin') to
+;; uses Merlin Mode (see URL `https://github.com/ocaml/merlin') to
 ;; check OCaml buffers for errors.
 ;;
 ;; # Setup
