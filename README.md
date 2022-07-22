@@ -73,9 +73,15 @@ If you enable Merlin's error checking with `M-x merlin-toggle-view-errors`
 Flycheck will not use the `ocaml-merlin` syntax checker anymore, to avoid
 duplicate and redundant error reporting.
 
-**Important:** You'll need to have a `.merlin` file somewhere in your project
-for `flycheck-ocaml` to work. If you're using `dune` just run `dune build`
-and you'll be all set.
+**Important:** You'll need to have a [Dune](https://dune.build) project
+for `flycheck-ocaml` to work. Once you've setup a project just run `dune build`
+and you'll be all set. See [this article](https://tarides.com/blog/2021-01-26-recent-and-upcoming-changes-to-merlin) for more details.
+
+Troubleshooting
+---------------
+
+You might need to restart manually the Merlin server after making changes to
+your Dune project's configuration.
 
 License
 -------

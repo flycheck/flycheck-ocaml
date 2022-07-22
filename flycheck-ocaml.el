@@ -108,16 +108,16 @@ Return the corresponding `flycheck-error'."
 (defun flycheck-verify-ocaml-merlin (_checker)
   "Verify the OCaml Merlin syntax checker."
   (let ((command (executable-find (merlin-command)))
-        (merlin-file (and buffer-file-name (locate-dominating-file buffer-file-name ".merlin"))))
+        (dune-file (and buffer-file-name (locate-dominating-file buffer-file-name "dune-project"))))
     (list
      (flycheck-verification-result-new
       :label "Merlin command"
       :message (if command (format "Found at %s" command) "Not found")
       :face (if command 'success '(bold error)))
      (flycheck-verification-result-new
-      :label "Merlin file (.merlin)"
-      :message (if merlin-file (format "Found at %s" merlin-file) "Not found")
-      :face (if merlin-file 'success '(bold error)))
+      :label "Dune project"
+      :message (if dune-file (format "Found at %s" dune-file) "Not found")
+      :face (if dune-file 'success '(bold error)))
      (flycheck-verification-result-new
       :label "Merlin mode"
       :message (if merlin-mode "enabled" "disabled")
