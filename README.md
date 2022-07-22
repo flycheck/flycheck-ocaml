@@ -14,16 +14,9 @@ Add OCaml support to [Flycheck][]:
 Installation
 ------------
 
-As usual, from [MELPA][] or [MELPA Stable][].
+You can install `flycheck-ocaml` from [MELPA][] or [MELPA Stable][]:
 
-In your [`Cask`][cask] file:
-
-```elisp
-(source gnu)
-(source melpa)
-
-(depends-on "flycheck-ocaml")
-```
+<kbd>M-x package-install [RET] flycheck-ocaml [RET]</kbd>
 
 For OCaml (assuming you're using `tuareg-mode`), add this to your `init.el`:
 
