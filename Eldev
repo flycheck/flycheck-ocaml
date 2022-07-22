@@ -1,1 +1,4 @@
 (eldev-use-package-archive 'melpa)
+
+;; tuareg-mode is needed in the tests
+(eldev-add-extra-dependencies 'test 'tuareg)
