@@ -137,7 +137,7 @@ CALLBACK is the status callback passed by Flycheck."
                            (lambda (alist)
                              (flycheck-ocaml-merlin-parse-error alist
                                                                 checker))
-                           (merlin/call "errors")))))
+                           (merlin-call "errors")))))
         (funcall callback 'finished errors))
     (error (funcall callback 'errored (error-message-string err)))))
 
