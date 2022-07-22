@@ -4,7 +4,8 @@ flycheck-ocaml — Flycheck for OCaml
 [![License GPL 3][badge-license]][copying]
 [![MELPA][badge-melpa]](http://melpa.org/#/flycheck-ocaml)
 [![MELPA Stable][badge-melpa-stable]](http://stable.melpa.org/#/flycheck-ocaml)
-[![Build Status][badge-travis]](https://travis-ci.org/flycheck/flycheck-ocaml)
+[![Build Status](https://github.com/flycheck/flycheck-ocaml/workflows/CI/badge.svg)](https://github.com/flycheck/flycheck-ocaml/actions/workflows/test.yml)
+
 
 Add OCaml support to [Flycheck][]:
 
