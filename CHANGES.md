@@ -2,7 +2,7 @@
 
 ## master (unreleased)
 
-- Turns out Dune stopped generating `.merlin` files (see [this article](https://tarides.com/blog/2021-01-26-recent-and-upcoming-changes-to-merlin)) - now we look for `dune-project` instead.
+- Turns out Dune 2.8 stopped generating `.merlin` files (see [this article](https://tarides.com/blog/2021-01-26-recent-and-upcoming-changes-to-merlin)) - now we look for `dune-project` instead.
 
 ## 0.4.1 (2022-07-20)
 
