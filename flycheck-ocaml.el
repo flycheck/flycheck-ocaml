@@ -149,9 +149,9 @@ See URL `https://github.com/ocaml/merlin'."
   :verify #'flycheck-verify-ocaml-merlin
   :modes '(caml-mode tuareg-mode reason-mode)
   :predicate (lambda () (and merlin-mode
-                             ;; Don't check if .merlin is not present somewhere
-                             ;; in the directory tree
-                             (and buffer-file-name (locate-dominating-file buffer-file-name ".merlin"))
+                             ;; Don’t check if there is not a 'dune-project'
+                             ;; present somewhere in the directory tree
+                             (and buffer-file-name (locate-dominating-file buffer-file-name "dune-project"))
                              ;; Don't check if Merlin's own checking is
                              ;; enabled, to avoid duplicate overlays
                              (not merlin-error-after-save))))
