@@ -54,6 +54,10 @@ Defaults to `error'."
 
 (message "Running tests on Emacs %s" emacs-version)
 
+;; in the CI we're running merlin via opam
+(unless (executable-find "ocamlmerlin")
+  (setq merlin-command "opam exec -- ocamlmerlin"))
+
 (defconst flycheck-ocaml-test-directory
   (let ((filename (if load-in-progress load-file-name (buffer-file-name))))
     (expand-file-name "test/" (locate-dominating-file filename "Cask")))
