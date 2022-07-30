@@ -74,7 +74,7 @@ error checking."
 
 (defun flycheck-ocaml-test-get-merlin-errors ()
   "Get Merlin errors in the current buffer."
-  (merlin/call "errors"))
+  (merlin-call "errors"))
 
 (ert-deftest flycheck-ocaml-merlin-parse-error/error ()
   :tags '(parsing)
