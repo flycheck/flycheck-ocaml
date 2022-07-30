@@ -60,7 +60,7 @@ Defaults to `error'."
 
 (defconst flycheck-ocaml-test-directory
   (let ((filename (if load-in-progress load-file-name (buffer-file-name))))
-    (expand-file-name "test/" (locate-dominating-file filename "Cask")))
+    (expand-file-name "test/" (locate-dominating-file filename "Eldev")))
   "Test suite directory, for resource loading.")
 
 (defun flycheck-ocaml-test-tuareg-mode ()
