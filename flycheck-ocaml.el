@@ -105,19 +105,28 @@ Return the corresponding `flycheck-error'."
                                (or level 'error) (or message .message)
                                :checker checker)))))
 
+(defun flycheck-ocaml-find-merlin-config-dir ()
+  "Find the directory containing Merlin configuration.
+
+The configuration is currently considered to be either .merlin or
+dune-project."
+  (and buffer-file-name
+       (or (locate-dominating-file buffer-file-name "dune-project")
+           (locate-dominating-file buffer-file-name ".merlin"))))
+
 (defun flycheck-verify-ocaml-merlin (_checker)
   "Verify the OCaml Merlin syntax checker."
   (let ((command (executable-find (merlin-command)))
-        (dune-file (and buffer-file-name (locate-dominating-file buffer-file-name "dune-project"))))
+        (config-dir (flycheck-ocaml-find-merlin-config-dir)))
     (list
      (flycheck-verification-result-new
       :label "Merlin command"
       :message (if command (format "Found at %s" command) "Not found")
       :face (if command 'success '(bold error)))
      (flycheck-verification-result-new
-      :label "Dune project"
-      :message (if dune-file (format "Found at %s" dune-file) "Not found")
-      :face (if dune-file 'success '(bold error)))
+      :label "Dune project or .merlin"
+      :message (if config-dir (format "Found at %s" config-dir) "Not found")
+      :face (if config-dir 'success '(bold error)))
      (flycheck-verification-result-new
       :label "Merlin mode"
       :message (if merlin-mode "enabled" "disabled")
@@ -149,9 +158,9 @@ See URL `https://github.com/ocaml/merlin'."
   :verify #'flycheck-verify-ocaml-merlin
   :modes '(caml-mode tuareg-mode reason-mode)
   :predicate (lambda () (and merlin-mode
-                             ;; Don't check if there is not a 'dune-project'
+                             ;; Don't check if Merlin configuration isn't
                              ;; present somewhere in the directory tree
-                             (and buffer-file-name (locate-dominating-file buffer-file-name "dune-project"))
+                             (flycheck-ocaml-find-merlin-config-dir)
                              ;; Don't check if Merlin's own checking is
                              ;; enabled, to avoid duplicate overlays
                              (not merlin-error-after-save))))
