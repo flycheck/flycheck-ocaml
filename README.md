@@ -1,3 +1,21 @@
+> **This package is deprecated.**
+>
+> Flycheck 39 checks OCaml out of the box: `ocaml-dune` builds a Dune project
+> with `dune build @check`, so references to sibling modules and dependencies
+> resolve, and `ocaml` handles standalone files. And even before Flycheck 39,
+> most people had moved away from using Merlin directly - the OCaml Platform's
+> recommended editor setup runs ocaml-lsp, which speaks to Emacs through the
+> LSP clients rather than through Merlin's own protocol. For that Merlin-grade
+> live feedback, run ocaml-lsp through Flycheck's built-in Eglot bridge:
+>
+> ```elisp
+> (global-flycheck-eglot-mode)
+> ```
+>
+> To migrate, remove flycheck-ocaml from your config; the built-in checkers
+> take over on their own. This repository will be archived and receives no
+> further updates.
+
 flycheck-ocaml — Flycheck for OCaml
 ===================================
 

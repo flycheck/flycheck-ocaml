@@ -28,6 +28,10 @@
 
 ;;; Commentary:
 
+;; This package is deprecated: Flycheck 39 checks OCaml out of the box
+;; through its ocaml-dune and ocaml checkers, and ocaml-lsp through the
+;; built-in Eglot bridge replaces direct Merlin use.  See the README.
+
 ;; This Flycheck extension provides a new `ocaml-merlin' syntax checker which
 ;; uses Merlin Mode (see URL `https://github.com/ocaml/merlin') to
 ;; check OCaml buffers for errors.
